@@ -11,7 +11,10 @@ A soon to be online multiplayer game using server side scripting.
 	
 ## Technologies
 Project is created with:
-* Python version: 3.7.2
+* Javascript
+* Node.js version 10.15.1
+* NPM version 6.4.1
+
 	
 ## Setup
 To run this project, 
