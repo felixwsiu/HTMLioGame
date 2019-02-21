@@ -20,6 +20,6 @@ Project is created with:
 To run this project, 
 
 ```
-$ npm i express bcryptjs passport passport-local ejs express-ejs-layouts mongoose connect-flash express-session
+$ npm i express bcryptjs passport passport-local ejs express-ejs-layouts mongoose connect-flash express-session socket.io
 $ npm run dev
 ```
