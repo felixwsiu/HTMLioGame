@@ -25,4 +25,5 @@ function getInfo() {
     if (loggedIn) {
         window.location.href = "StartScreen.html";
     }
+    
 }
