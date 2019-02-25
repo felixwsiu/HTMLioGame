@@ -12,6 +12,6 @@ router.get('/', (req, res) => res.render('welcome'));
 
 //router.get('/game',ensureAuthenticated, (req,res) => res.sendFile(__dirname + '/client/index.html', { name: req.user.name }));
 router.get('/game', ensureAuthenticated, (req, res) => res.render('game', {
-    name: req.user.name
+    name: req.user.name , coins: req.user.coins
 }));
 module.exports = router;

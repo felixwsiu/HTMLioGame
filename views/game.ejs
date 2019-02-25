@@ -1,124 +1,150 @@
-<h1 class="mt-4">HTML IO GAME</h1>
-<p class="lead mb-3">Welcome
-    <%= name %>
-</p>
-
-
-<style>
-    #canvas_div {
-        position: absolute;
-        bottom: 10px;
-        width: 50%;
-
-        vertical-align: bottom;
-    }
-</style>
-
-
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
-        crossorigin="anonymous">
-    <link rel="stylesheet" href="https://bootswatch.com/4/sandstone/bootstrap.min.css">
-    <title>HTML IO GAME</title>
-
-
-
-</head>
-
-<body>
-    <div class="container">
-
+<link href="menu.css" rel="stylesheet" type="text/css">
+<div class="row align-items-center">
+    <div class="col ">
+        <h1 class="mt-4">HTML IO GAME</h1>
     </div>
-    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-
-
-
-
-
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
-    <a href="/users/logout" class="btn btn-primary float-right rounded pt4 btn-lg ">Logout</a>
-
-    <div>
-        <canvas id="ctx" width="1000" height="800" style="border:1px solid #000000;"></canvas>
+    <div class="col-md-3 align-self-end">
+        <a href="/users/logout" class="btn btn-success align-bottom float-right bg-success rounded  btn-lg ">Logout</a>
     </div>
+</div>
+<p class="lead mb-3">Logged in as:
+    <%= name %> <br/>  Coins : <%= coins %>
+
+
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+            crossorigin="anonymous">
+        <link rel="stylesheet" href="https://bootswatch.com/4/sandstone/bootstrap.min.css">
+        <title>HTML IO GAME</title>
 
 
 
-    <script>
-        var ctx = document.getElementById("ctx").getContext("2d");
-        ctx.font = '30px Arial';
-        var socket = io();
+    </head>
 
-        socket.on('newPositions', function (data) {
-            ctx.clearRect(0, 0, 1000, 800);
-            for (var i = 0; i < data.length; i++) {
-                ctx.fillText(data[i].number, data[i].x, data[i].y);
+    <body>
+
+        <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+
+
+
+
+        <div id="main">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong> How to play! </strong> Bet your wager and simply type the words that show up on your screen!
+                If you manage to finish typing the words before your opponents, the pot is yours!.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <canvas id="ctx" x="0" y="0" width="1000" height="800" style="border:1px solid #000000;"></canvas>
+            <button type="button" class="btn btn-primary " id="single" onclick="btncontrol(this.id);"> Singleplayer</button>
+            <button type="button" class="btn btn-primary " id="multi" onclick="btncontrol(this.id);"> Multiplayer Quick
+                Play</button>
+            <form class="float-right">
+                <label for="Room Code">
+                    <input id="roomcode">
+                </label>
+                <button type="button" onclick="btncontrol(this.id)"> Room Code </button>
+                <button type="button" onclick="btncontrol(this.id)"> Host </button>
+            </form>
+
+        </div>
+
+
+
+        <script>
+            var query = "canvas[x='0'][y='0'][height='800'][width='1000']";
+            var canvas = document.querySelector(query);
+            canvas.style.display = "none";
+
+            var gamestart = false;
+
+            var ctx = document.getElementById("ctx").getContext("2d");
+            ctx.font = '30px Arial';
+            var socket = io();
+
+            // Menu Logic
+            function btncontrol(id) {}
+
+
+            socket.on('newPositions', function (data) {
+                if (gamestart == true) {
+                    ctx.clearRect(0, 0, 1000, 800);
+                    for (var i = 0; i < data.player.length; i++) {
+                        ctx.fillText(data.player[i].number, data.player[i].x, data.player[i].y);
+                    }
+                }
+
+            });
+
+            document.onkeydown = function (event) {
+                if (gamestart == true) {
+                    if (event.key === 'd') //d
+                        socket.emit('keyPress', {
+                            inputID: 'right',
+                            state: true
+                        });
+                    if (event.key === 's') //s
+                        socket.emit('keyPress', {
+                            inputID: 'down',
+                            state: true
+                        });
+                    if (event.key === 'a') //a
+                        socket.emit('keyPress', {
+                            inputID: 'left',
+                            state: true
+                        });
+                    if (event.key === 'w') //w
+                        socket.emit('keyPress', {
+                            inputID: 'up',
+                            state: true
+                        });
+                }
             }
 
-        });
-
-
-        document.onkeydown = function (event) {
-            if (event.key === 'd') //d
-                socket.emit('keyPress', {
-                    inputID: 'right',
-                    state: true
-                });
-            if (event.key === 's') //s
-                socket.emit('keyPress', {
-                    inputID: 'down',
-                    state: true
-                });
-            if (event.key === 'a') //a
-                socket.emit('keyPress', {
-                    inputID: 'left',
-                    state: true
-                });
-            if (event.key === 'w') //w
-                socket.emit('keyPress', {
-                    inputID: 'up',
-                    state: true
-                });
-        }
-
-        document.onkeyup = function (event) {
-            if (event.key === 'd') //d
-                socket.emit('keyPress', {
-                    inputID: 'right',
-                    state: false
-                });
-            if (event.key === 's') //s
-                socket.emit('keyPress', {
-                    inputID: 'down',
-                    state: false
-                });
-            if (event.key === 'a') //a
-                socket.emit('keyPress', {
-                    inputID: 'left',
-                    state: false
-                });
-            if (event.key === 'w') //w
-                socket.emit('keyPress', {
-                    inputID: 'up',
-                    state: false
-                });
-        }
-    </script>
+            document.onkeyup = function (event) {
+                if (gamestart == true) {
+                    if (event.key === 'd') //d
+                        socket.emit('keyPress', {
+                            inputID: 'right',
+                            state: false
+                        });
+                    if (event.key === 's') //s
+                        socket.emit('keyPress', {
+                            inputID: 'down',
+                            state: false
+                        });
+                    if (event.key === 'a') //a
+                        socket.emit('keyPress', {
+                            inputID: 'left',
+                            state: false
+                        });
+                    if (event.key === 'w') //w
+                        socket.emit('keyPress', {
+                            inputID: 'up',
+                            state: false
+                        });
+                }
+            }
+        </script>
 
 
 
 
-</body>
+    </body>
 
-</html>
+    </html>
